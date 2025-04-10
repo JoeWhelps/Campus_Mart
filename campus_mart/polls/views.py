@@ -73,3 +73,23 @@ def logout(request):
     del request.session["user"]
     return HttpResponseRedirect(reverse("polls:login"))
 
+def register(request):
+    errors = None
+    if request.method == "POST":
+        uname = request.POST.get("username")
+        pwd = request.POST.get("password")
+        confirm = request.POST.get("confirm")
+
+        if not uname or not pwd or pwd != confirm:
+            errors = [("validation", "Passwords do not match or missing fields")]
+        else:
+            try:
+                hashed_pwd = make_password(pwd)
+                User.objects.create(username=uname, password=hashed_pwd)
+                return HttpResponseRedirect(reverse("polls:login"))
+            except ValidationError as ve:
+                errors = [("validation", str(ve))]
+
+    return render(request, "polls/register.html", {"errors": errors})
+
+
