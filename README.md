@@ -1,5 +1,8 @@
 <b>Brainstorm/Planning Notes</b> (will delete before presentation):
 
+Run the app:<br/>
+<b>python3 manage.py runserver 129.74.152.125:51073</b><br/>
+<br/>
 Plan for the App: <br/>
 Feature 1: Create a Profile, Login, Logout <br/>
 Feature 2: Create, Update, Delete Listings<br/>
@@ -26,6 +29,5 @@ python3 manage.py createsuperuser (to create your own)<br/>
 <br/>
 Regular User:<br/>
 User: jwhelple03
-Password: JoeMama03
+Password: JoeMama03<br/>
 <br/>
-Run the app: python3 manage.py runserver 129.74.152.125:51073
