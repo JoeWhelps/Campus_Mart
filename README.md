@@ -4,6 +4,8 @@ Run the app:<br/>
 Katie:<b>python3 manage.py runserver 129.74.152.125:51073</b><br/>
 Joe:<b>python3 manage.py runserver 129.74.152.125:52073</b><br/>
 <br/>
+http://129.74.152.125:52073/<br/>
+<br/>
 Plan for the App: <br/>
 Feature 1: Create a Profile, Login, Logout <br/>
 Feature 2: Create, Update, Delete Listings<br/>
