@@ -17,8 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
-urlpatterns = [
-    path('polls/', include("polls.urls")),
-    path('admin/', admin.site.urls),
+from django.shortcuts import redirect
 
+urlpatterns = [
+    path('', lambda request: redirect('listings/')),  # Redirect root to listings
+    path('listings/', include('listings.urls')),
+    path('polls/', include('polls.urls')),
+    path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

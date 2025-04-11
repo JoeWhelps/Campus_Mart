@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Joe's Bountiful Blog</title>
+    </head>
+    <body>
+        <h1>Listings!</h1>
+        <ul>
+        {% for post in posts %}
+            <li><a href="/listings/{{ post.id }}/">{{ post.title }}</a> by <i>{{ post.author_name }}</i> ({{ post.pub_date }})</li>
+        {% endfor %}
+    </ul>
+    </body>
+</html>
+
