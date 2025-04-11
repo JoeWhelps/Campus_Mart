@@ -28,6 +28,11 @@ email: jwhelple@nd.edu
 username: jwhelple
 Password: Widduwee<br/>
 <br/>
+SuperUser:<br/>
+email: khurley6@nd.edu
+username: khurley6
+Password: Ckkaxm24!!!!!!!!<br/>
+<br/>
 python3 manage.py createsuperuser (to create your own)<br/>
 <br/>
 Regular User:<br/>
