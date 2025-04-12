@@ -12,5 +12,5 @@ class Listing(models.Model):
     description = models.CharField(max_length=500, unique=False)
     price = models.IntegerField()
     condition = models.CharField(max_length=100, unique=False)
-    status = models.Charfield(max_length=50, unique=False)
+    status = models.CharField(max_length=50, unique=False)
     photo = models.ImageField(upload_to='images/')

@@ -8,6 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from django.forms.models import model_to_dict
+from .models import User, Listing 
 
 def welcome(request):
     return render(request, 'marketplace/welcome.html')
@@ -65,6 +66,40 @@ def login(request):
             errors = [('authentication', "Login error")]
 
     return render(request, 'marketplace/login.html', {'errors': errors})
+
+
+def createListings(request):
+    if request.POST:
+        # Create a model instance and populate it with data from the request
+        title = request.POST.get("title", "")
+        description = request.POST.get("description", "")
+        price = request.POST.get("price", "")
+        condition = request.POST.get("condition", "")
+        status = request.POST.get("status", "")
+        photo = request.POST.get("photo", "")
+
+        listing = Listing(title=title, description=description, price=price, condition=condition, status=status, photo=photo)
+
+        errors = []
+        if not title or not description or not price or not condition or not status or not photo: #make sure all fields are inputted
+            errors.append(("validation", "All fields are required."))
+
+        
+        try:
+            user.full_clean()
+            listing.save()  # saves on the db
+            # redirect to the login page
+            return HttpResponseRedirect(reverse('login'))
+        except ValidationError as e:
+            errors.extend([(field, err[0]) for field, err in e.message_dict.items()])
+            return render(request, "registration/createListing.html", {
+                "errors": errors,
+                "values": model_to_dict(user)
+            })
+        return HttpResponseRedirect(reverse('login'))
+
+    return render(request, "marketplace/login.html")
+
 
 def logout(request):
     # remove the logged-in user information
