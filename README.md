@@ -1,6 +1,7 @@
-<b>Brainstorm/Planning Notes</b> (will delete before presentation):
+<b>Brainstorm/Planning Notes</b>:
 
 Run the app:<br/>
+The project is in a .zip file and once expanded you go to the main level and run:<br/>
 Katie:<b>python3 manage.py runserver 129.74.152.125:51073</b><br/>
 Joe:<b>python3 manage.py runserver 129.74.152.125:52073</b><br/>
 <br/>
@@ -14,28 +15,4 @@ Feature 4: Limit/Buy more listings (KratosCoin)<br/>
 HTML/User Experience: make it look nice<br/>
 <br/>
 First functionality, then HTML<br/>
-<b>Feature 1:</b>
-Almost done with Login, just need to add a "create account" button and then a logout addition.
-<br/>
-<b>Feature 2:</b>
-Need to reconfigure polls into the blog post code in the class repo- will paste in starter code.
 
-<br/>
-<b>General Operating Information:</b><br/>
-
-SuperUser:<br/>
-email: jwhelple@nd.edu
-username: jwhelple
-Password: Widduwee<br/>
-<br/>
-SuperUser:<br/>
-email: khurley6@nd.edu
-username: khurley6
-Password: Ckkaxm24!!!!!!!!<br/>
-<br/>
-python3 manage.py createsuperuser (to create your own)<br/>
-<br/>
-Regular User:<br/>
-User: jwhelple03
-Password: JoeMama03<br/>
-<br/>
