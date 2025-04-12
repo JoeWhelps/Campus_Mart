@@ -1,6 +1,14 @@
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
+from django.contrib.auth.hashers import check_password, make_password
+from django.core.exceptions import ValidationError
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
+from django.views.generic import ListView, DetailView
+from .models import Question, Choice, User
+from .register import register as register_view 
 
 def home(request):
     return render(request, 'marketplace/home.html')
@@ -51,3 +59,25 @@ def register(request):
         return HttpResponseRedirect(reverse('polls:login'))
 
     return render(request, "polls/register.html")
+
+def login(request):
+    errors = None
+    if request.POST:
+        # Create a model instance and populate it with data from the request
+        uname = request.POST["username"]
+        pwd = request.POST["password"]
+        user = User.objects.filter(username=uname)
+
+        if len(user) > 0 and check_password(pwd, user[0].password):
+            # create a new session
+            request.session["user"] = uname
+            return HttpResponseRedirect(reverse('polls:index'))
+        else:
+            errors = [('authentication', "Login error")]
+
+    return render(request, 'polls/login.html', {'errors': errors})
+
+def logout(request):
+    # remove the logged-in user information
+    del request.session["user"]
+    return HttpResponseRedirect(reverse("polls:login"))
