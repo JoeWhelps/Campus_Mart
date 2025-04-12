@@ -7,8 +7,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
-from .models import Question, Choice, User
-from .register import register as register_view 
+from django.forms.models import model_to_dict
 
 def welcome(request):
     return render(request, 'marketplace/welcome.html')
