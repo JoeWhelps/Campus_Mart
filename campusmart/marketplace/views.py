@@ -13,6 +13,8 @@ from .models import User, Listing
 def welcome(request):
     return render(request, 'marketplace/welcome.html')
 
+def home(request):
+    return render(request, 'marketplace/home.html')
 
 def register(request):
     if request.POST:
@@ -39,7 +41,7 @@ def register(request):
             # if we reach here, the validation succeeded
             user.save()  # saves on the db
             # redirect to the login page
-            return HttpResponseRedirect(reverse('polls:login'))
+            return HttpResponseRedirect(reverse('login'))
         except ValidationError as e:
             errors.extend([(field, err[0]) for field, err in e.message_dict.items()])
             return render(request, "registration/register.html", {
@@ -61,7 +63,7 @@ def login(request):
         if len(user) > 0 and check_password(pwd, user[0].password):
             # create a new session
             request.session["user"] = uname
-            return HttpResponseRedirect(reverse('polls:index'))
+            return HttpResponseRedirect(reverse('home'))
         else:
             errors = [('authentication', "Login error")]
 
@@ -86,19 +88,19 @@ def createListings(request):
 
         
         try:
-            user.full_clean()
+            listing.full_clean()
             listing.save()  # saves on the db
             # redirect to the login page
             return HttpResponseRedirect(reverse('login'))
         except ValidationError as e:
             errors.extend([(field, err[0]) for field, err in e.message_dict.items()])
-            return render(request, "registration/createListing.html", {
+            return render(request, "marketplace/createListing.html", {
                 "errors": errors,
-                "values": model_to_dict(user)
+                "values": model_to_dict(listing)
             })
         return HttpResponseRedirect(reverse('login'))
 
-    return render(request, "marketplace/login.html")
+    return render(request, "marketplace/createListing.html")
 
 
 def logout(request):
