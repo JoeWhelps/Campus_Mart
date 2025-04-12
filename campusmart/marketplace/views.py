@@ -10,19 +10,9 @@ from django.views.generic import ListView, DetailView
 from .models import Question, Choice, User
 from .register import register as register_view 
 
-def home(request):
-    return render(request, 'marketplace/home.html')
+def welcome(request):
+    return render(request, 'marketplace/welcome.html')
 
-
-def signup(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')  # After signup, go to login page
-    else:
-        form = UserCreationForm()
-    return render(request, 'registration/signup.html', {'form': form})
 
 def register(request):
     if request.POST:
@@ -52,13 +42,13 @@ def register(request):
             return HttpResponseRedirect(reverse('polls:login'))
         except ValidationError as e:
             errors.extend([(field, err[0]) for field, err in e.message_dict.items()])
-            return render(request, "polls/register.html", {
+            return render(request, "registration/register.html", {
                 "errors": errors,
                 "values": model_to_dict(user)
             })
         return HttpResponseRedirect(reverse('polls:login'))
 
-    return render(request, "polls/register.html")
+    return render(request, "marketplace/register.html")
 
 def login(request):
     errors = None
@@ -75,9 +65,21 @@ def login(request):
         else:
             errors = [('authentication', "Login error")]
 
-    return render(request, 'polls/login.html', {'errors': errors})
+    return render(request, 'marketplace/login.html', {'errors': errors})
 
 def logout(request):
     # remove the logged-in user information
     del request.session["user"]
-    return HttpResponseRedirect(reverse("polls:login"))
+    return HttpResponseRedirect(reverse("login"))
+
+'''
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # After signup, go to login page
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})
+'''
