@@ -1,0 +1,12 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <h1>Welcome to CampusMart!</h1>
+    <p>Your campus marketplace for textbooks, electronics, and more!</p>
+    {% if user.is_authenticated %}
+        <p>Welcome back, {{ user.username }}! <a href="{% url 'listings:create' %}">Post a Listing</a></p>
+    {% else %}
+        <p><a href="{% url 'login' %}">Login</a> or <a href="{% url 'signup' %}">Sign Up</a> to start buying and selling!</p>
+    {% endif %}
+{% endblock %}
+
