@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from .models import Question, Choice, User
+from .register import register as register_view 
 
 
 def index(request):
@@ -73,6 +74,7 @@ def logout(request):
     del request.session["user"]
     return HttpResponseRedirect(reverse("polls:login"))
 
+'''
 def register(request):
     errors = None
     if request.method == "POST":
@@ -91,5 +93,5 @@ def register(request):
                 errors = [("validation", str(ve))]
 
     return render(request, "polls/register.html", {"errors": errors})
-
+'''
 

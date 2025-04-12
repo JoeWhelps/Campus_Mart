@@ -2,7 +2,7 @@
 {% block content %}
 <h1>Create Account</h1>
 {% if errors %}
-<div class="alert alert-danger d-flex align-items-center" role="alert">
+<div class="alert alert-danger" role="alert">
     <ul>
         {% for error in errors %}
         <li> {{ error.0 }}: {{error.1}}</li>
@@ -12,17 +12,17 @@
 {% endif %}
 <form class="m-auto col-md-3" method="POST">
     {% csrf_token %}
-    <h1 class="h3 mb-3 fw-normal">Enter the information below to create your account</h1>
+    <h1 class="h3 mb-3 fw-normal text-center">Enter the information below to create your account</h1>
     <div class="form-floating">
-        <input type="text" class="form-control" id="name" name="name" placeholder="name">
+        <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{ values.name|default:'' }}">
         <label for="name">Name</label>
     </div>
     <div class="form-floating">
-        <input type="text" class="form-control" id="username" name="username" placeholder="username">
-        <label for="name">Username</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Username" value="{{ values.username|default:'' }}">
+        <label for="username">Username</label>
     </div>
     <div class="form-floating">
-        <input type="text" class="form-control" id="email" name="email" placeholder="email">
+        <input type="text" class="form-control" id="email" name="email" placeholder="Email" value="{{ values.email|default:'' }}">
         <label for="name">Email</label>
     </div>
     <div class="form-floating">
