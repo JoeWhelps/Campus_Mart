@@ -11,46 +11,56 @@ from django.forms.models import model_to_dict
 from .models import User, Listing 
 
 def welcome(request):
-    return render(request, 'marketplace/welcome.html')
+    return render(request, 'market/welcome.html')
 
-def home(request):
-    return render(request, 'marketplace/home.html')
+def home_view(request):
+    user_obj = None
+    if "user" in request.session:
+        user_obj = User.objects.filter(username=request.session["user"]).first()
+    return render(request, 'market/home.html', {'user_obj': user_obj})
+
 
 def register(request):
+    print("ahhhhhhh")
     if request.POST:
-        # Create a model instance and populate it with data from the request
+        print("okkka")
         name = request.POST.get("name", "")
         username = request.POST.get("username", "")
         email = request.POST.get("email", "")
         password = request.POST.get("password", "")
 
-        user = User(name=name, username=username, email=email, password=password)
-
         errors = []
-        if not name or not username or not email or not password: #make sure all fields are inputted
+        if not name or not username or not email or not password:
             errors.append(("validation", "All fields are required."))
 
-        if User.objects.filter(username=username).exists(): #make sure that username is not already in use
+        if User.objects.filter(username=username).exists():
             errors.append(("username", "Username already in use"))
-        if User.objects.filter(email=email).exists(): #make sure that email is not already in use
+        if User.objects.filter(email=email).exists():
             errors.append(("email", "Email already in use"))
-        
+
+        if errors:
+            return render(request, "market/register.html", {
+                "errors": errors,
+                "values": {"name": name, "username": username, "email": email}
+            })
+
+        # Encrypt password BEFORE saving or validating
+        hashed_password = make_password(password)
+        user = User(name=name, username=username, email=email, password=hashed_password)
+
         try:
             user.full_clean()
-            user.password = make_password(password)  # encrypts
-            # if we reach here, the validation succeeded
-            user.save()  # saves on the db
-            # redirect to the login page
-            return HttpResponseRedirect(reverse('login'))
+            user.save()
+            return HttpResponseRedirect(reverse('marketplace:login'))
         except ValidationError as e:
             errors.extend([(field, err[0]) for field, err in e.message_dict.items()])
-            return render(request, "registration/register.html", {
+            return render(request, "market/register.html", {
                 "errors": errors,
-                "values": model_to_dict(user)
+                "values": {"name": name, "username": username, "email": email}
             })
-        return HttpResponseRedirect(reverse('polls:login'))
 
-    return render(request, "marketplace/register.html")
+    return render(request, "market/register.html")
+
 
 def login(request):
     errors = None
@@ -63,11 +73,11 @@ def login(request):
         if len(user) > 0 and check_password(pwd, user[0].password):
             # create a new session
             request.session["user"] = uname
-            return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect(reverse('marketplace:home'))
         else:
             errors = [('authentication', "Login error")]
 
-    return render(request, 'marketplace/login.html', {'errors': errors})
+    return render(request, 'market/login.html', {'errors': errors})
 
 
 def createListings(request):
@@ -91,22 +101,22 @@ def createListings(request):
             listing.full_clean()
             listing.save()  # saves on the db
             # redirect to the login page
-            return HttpResponseRedirect(reverse('login'))
+            return HttpResponseRedirect(reverse('marketplace:login'))
         except ValidationError as e:
             errors.extend([(field, err[0]) for field, err in e.message_dict.items()])
-            return render(request, "marketplace/createListing.html", {
+            return render(request, "market/createListing.html", {
                 "errors": errors,
                 "values": model_to_dict(listing)
             })
         return HttpResponseRedirect(reverse('login'))
 
-    return render(request, "marketplace/createListing.html")
+    return render(request, "market/createListing.html")
 
 
 def logout(request):
     # remove the logged-in user information
     del request.session["user"]
-    return HttpResponseRedirect(reverse("login"))
+    return HttpResponseRedirect(reverse("marketplace:login"))
 
 '''
 def signup(request):

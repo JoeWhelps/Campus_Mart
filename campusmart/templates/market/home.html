@@ -1,0 +1,13 @@
+{% if user_obj %}
+    <p>Welcome back, <strong>{{ user_obj.username }}</strong>!</p>
+    <hr>
+    <h3>User Info:</h3>
+    <ul>
+        <li><strong>Name:</strong> {{ user_obj.name }}</li>
+        <li><strong>Username:</strong> {{ user_obj.username }}</li>
+        <li><strong>Email:</strong> {{ user_obj.email }}</li>
+    </ul>
+{% else %}
+    <p>You are not logged in. <a href="{% url 'marketplace:login' %}">Login here</a>.</p>
+{% endif %}
+

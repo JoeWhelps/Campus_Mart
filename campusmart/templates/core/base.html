@@ -19,26 +19,26 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'welcome' %}">CampusMart</a>
+            <a class="navbar-brand" href="{% url 'marketplace:welcome' %}">CampusMart</a>
 
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'listings:create' %}">New Listing</a>
+                            <a class="nav-link" href="{% url 'marketplace:listings:create' %}">New Listing</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                            <a class="nav-link" href="{% url 'marketplace:logout' %}">Logout</a>
                         </li>
                         <li class="nav-item">
                             <span class="nav-link disabled">Hello, {{ user.username }}</span>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                            <a class="nav-link" href="{% url 'marketplace:login' %}">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
+                            <a class="nav-link" href="{% url 'marketplace:register' %}">Register</a>
                         </li>
                     {% endif %}
                 </ul>
