@@ -15,4 +15,9 @@ Feature 4: Limit/Buy more listings (KratosCoin)<br/>
 HTML/User Experience: make it look nice<br/>
 <br/>
 First functionality, then HTML<br/>
+<br/>
+superuser info:<br/>
+name: jwhelple<br/>
+email: jwhelple@nd.edu<br/>
+password: ChickenJockey<br/>
 
