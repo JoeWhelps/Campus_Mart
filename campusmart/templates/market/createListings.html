@@ -1,43 +1,53 @@
 {% extends "core/base.html" %}
 {% block content %}
 <h1>Create Listing</h1>
+
 {% if errors %}
 <div class="alert alert-danger" role="alert">
     <ul>
         {% for error in errors %}
-        <li> {{ error.0 }}: {{error.1}}</li>
+        <li>{{ error.0 }}: {{ error.1 }}</li>
         {% endfor %}
     </ul>
 </div>
 {% endif %}
-<form class="m-auto col-md-3" method="POST">
+
+<form class="m-auto col-md-3" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <h1 class="h3 mb-3 fw-normal text-center">Listing</h1>
+
     <div class="form-floating">
         <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="{{ values.title|default:'' }}">
-        <label for="title"></label>
+        <label for="title">Title</label>
     </div>
+
     <div class="form-floating">
         <input type="text" class="form-control" id="description" name="description" placeholder="Description" value="{{ values.description|default:'' }}">
-        <label for="description"></label>
+        <label for="description">Description</label>
     </div>
+
     <div class="form-floating">
-        <input type="text" class="form-control" id="price" name="price" placeholder="Price" value="{{ values.price|default:'' }}">
-        <label for="price"></label>
+        <input type="number" class="form-control" id="price" name="price" placeholder="Price" value="{{ values.price|default:'' }}">
+        <label for="price">Price</label>
     </div>
+
     <div class="form-floating">
-        <input type="text" class="form-control" id="condition" name="condition"  placeholder="Condition">
-        <label for="condition"></label>
+        <input type="text" class="form-control" id="condition" name="condition" placeholder="Condition" value="{{ values.condition|default:'' }}">
+        <label for="condition">Condition</label>
     </div>
+
     <div class="form-floating">
-        <input type="text" class="form-control" id="status" name="status"  placeholder="Status">
-        <label for="status"></label>
+        <input type="text" class="form-control" id="status" name="status" placeholder="Status" value="{{ values.status|default:'' }}">
+        <label for="status">Status</label>
     </div>
+
     <div class="form-floating">
-        <input type="photo" class="form-control" id="photo" name="photo"  placeholder="Photo(s)">
-        <label for="photo"></label>
+        <input type="file" class="form-control" id="photo" name="photo" placeholder="Photo(s)">
+        <label for="photo">Photo</label>
     </div>
+
     <button class="w-100 btn btn-lg btn-primary" type="submit">Add Listing</button>
 </form>
 
 {% endblock %}
+
