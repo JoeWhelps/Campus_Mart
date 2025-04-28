@@ -9,21 +9,29 @@ from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from django.forms.models import model_to_dict
 from .models import User, Listing 
+from django.contrib.auth import logout as django_logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.core.exceptions import ValidationError
+from django.http import HttpResponseRedirect
+from django.forms.models import model_to_dict
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout as django_logout
+from .models import User, Listing
+from django.shortcuts import render
+from listings.models import Listing
 
-def welcome(request):
-    return render(request, 'market/welcome.html')
-
+@login_required
 def home_view(request):
-    user_obj = None
-    if "user" in request.session:
-        user_obj = User.objects.filter(username=request.session["user"]).first()
-    return render(request, 'market/home.html', {'user_obj': user_obj})
+    listings = Listing.objects.all()
+    return render(request, 'market/home.html', {'listings': listings})
+
 
 
 def register(request):
-    print("ahhhhhhh")
-    if request.POST:
-        print("okkka")
+    if request.method == "POST":
         name = request.POST.get("name", "")
         username = request.POST.get("username", "")
         email = request.POST.get("email", "")
@@ -44,14 +52,18 @@ def register(request):
                 "values": {"name": name, "username": username, "email": email}
             })
 
-        # Encrypt password BEFORE saving or validating
+        # Hash password & save user
         hashed_password = make_password(password)
         user = User(name=name, username=username, email=email, password=hashed_password)
 
         try:
             user.full_clean()
             user.save()
-            return HttpResponseRedirect(reverse('marketplace:login'))
+            # Auto-login the user
+            auth_user = authenticate(request, username=username, password=password)
+            if auth_user:
+                login(request, auth_user)
+                return redirect('login')
         except ValidationError as e:
             errors.extend([(field, err[0]) for field, err in e.message_dict.items()])
             return render(request, "market/register.html", {
@@ -62,27 +74,9 @@ def register(request):
     return render(request, "market/register.html")
 
 
-def login(request):
-    errors = None
-    if request.POST:
-        # Create a model instance and populate it with data from the request
-        uname = request.POST["username"]
-        pwd = request.POST["password"]
-        user = User.objects.filter(username=uname)
-
-        if len(user) > 0 and check_password(pwd, user[0].password):
-            # create a new session
-            request.session["user"] = uname
-            return HttpResponseRedirect(reverse('marketplace:home'))
-        else:
-            errors = [('authentication', "Login error")]
-
-    return render(request, 'market/login.html', {'errors': errors})
-
-
+@login_required
 def createListings(request):
-    if request.POST:
-        # Create a model instance and populate it with data from the request
+    if request.method == "POST":
         title = request.POST.get("title", "")
         description = request.POST.get("description", "")
         price = request.POST.get("price", "")
@@ -93,39 +87,23 @@ def createListings(request):
         listing = Listing(title=title, description=description, price=price, condition=condition, status=status, photo=photo)
 
         errors = []
-        if not title or not description or not price or not condition or not status or not photo: #make sure all fields are inputted
+        if not all([title, description, price, condition, status, photo]):
             errors.append(("validation", "All fields are required."))
 
-        
         try:
             listing.full_clean()
-            listing.save()  # saves on the db
-            # redirect to the login page
-            return HttpResponseRedirect(reverse('marketplace:login'))
+            listing.save()
+            return redirect('marketplace:home')
         except ValidationError as e:
             errors.extend([(field, err[0]) for field, err in e.message_dict.items()])
             return render(request, "market/createListing.html", {
                 "errors": errors,
                 "values": model_to_dict(listing)
             })
-        return HttpResponseRedirect(reverse('login'))
 
     return render(request, "market/createListing.html")
 
 
 def logout(request):
-    # remove the logged-in user information
-    del request.session["user"]
-    return HttpResponseRedirect(reverse("marketplace:login"))
-
-'''
-def signup(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')  # After signup, go to login page
-    else:
-        form = UserCreationForm()
-    return render(request, 'registration/signup.html', {'form': form})
-'''
+    django_logout(request)
+    return redirect('login')

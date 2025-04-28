@@ -1,53 +1,55 @@
 {% extends "core/base.html" %}
+
 {% block content %}
-<h1>Create Listing</h1>
+<div class="container mt-4">
+    <h1>Create a New Listing</h1>
 
-{% if errors %}
-<div class="alert alert-danger" role="alert">
-    <ul>
-        {% for error in errors %}
-        <li>{{ error.0 }}: {{ error.1 }}</li>
-        {% endfor %}
-    </ul>
+    {% if errors %}
+    <div class="alert alert-danger" role="alert">
+        <ul>
+            {% for error in errors %}
+            <li>{{ error.0 }}: {{ error.1 }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <form class="m-auto col-md-6" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="title" name="title" placeholder="Title">
+            <label for="title">Title</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <textarea class="form-control" id="description" name="description" placeholder="Description" style="height: 100px;"></textarea>
+            <label for="description">Description</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="number" class="form-control" id="price" name="price" placeholder="Price">
+            <label for="price">Price</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <select class="form-select" id="condition" name="condition">
+                <option value="">Select condition</option>
+                <option value="New">New</option>
+                <option value="Like New">Like New</option>
+                <option value="Used">Used</option>
+                <option value="Fair">Fair</option>
+            </select>
+            <label for="condition">Condition</label>
+        </div>
+
+        <div class="mb-3">
+            <label for="photo" class="form-label">Upload Photo</label>
+            <input class="form-control" type="file" id="photo" name="photo">
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Post Listing</button>
+    </form>
 </div>
-{% endif %}
-
-<form class="m-auto col-md-3" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <h1 class="h3 mb-3 fw-normal text-center">Listing</h1>
-
-    <div class="form-floating">
-        <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="{{ values.title|default:'' }}">
-        <label for="title">Title</label>
-    </div>
-
-    <div class="form-floating">
-        <input type="text" class="form-control" id="description" name="description" placeholder="Description" value="{{ values.description|default:'' }}">
-        <label for="description">Description</label>
-    </div>
-
-    <div class="form-floating">
-        <input type="number" class="form-control" id="price" name="price" placeholder="Price" value="{{ values.price|default:'' }}">
-        <label for="price">Price</label>
-    </div>
-
-    <div class="form-floating">
-        <input type="text" class="form-control" id="condition" name="condition" placeholder="Condition" value="{{ values.condition|default:'' }}">
-        <label for="condition">Condition</label>
-    </div>
-
-    <div class="form-floating">
-        <input type="text" class="form-control" id="status" name="status" placeholder="Status" value="{{ values.status|default:'' }}">
-        <label for="status">Status</label>
-    </div>
-
-    <div class="form-floating">
-        <input type="file" class="form-control" id="photo" name="photo" placeholder="Photo(s)">
-        <label for="photo">Photo</label>
-    </div>
-
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Add Listing</button>
-</form>
-
 {% endblock %}
 

@@ -1,0 +1,16 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ object.title }}</h1>
+    <img src="{{ object.photo.url }}" class="img-fluid mb-4" alt="Product Image">
+
+    <p><strong>Price:</strong> ${{ object.price }}</p>
+    <p><strong>Condition:</strong> {{ object.condition }}</p>
+    <p><strong>Status:</strong> {{ object.status }}</p>
+    <p><strong>Description:</strong></p>
+    <p>{{ object.description }}</p>
+
+    <a href="{% url 'marketplace:home' %}" class="btn btn-secondary mt-4">Back to Listings</a>
+</div>
+{% endblock %}

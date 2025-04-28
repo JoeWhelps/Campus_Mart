@@ -19,14 +19,15 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'marketplace:welcome' %}">CampusMart</a>
+            <a class="navbar-brand" href="{% url 'marketplace:home' %}">CampusMart</a>
 
-            <div class="collapse navbar-collapse">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'marketplace:listings:create' %}">New Listing</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'marketplace:logout' %}">Logout</a>
                         </li>
@@ -35,7 +36,7 @@
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'marketplace:login' %}">Login</a>
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'marketplace:register' %}">Register</a>
@@ -59,7 +60,7 @@
     </div>
 
     <!-- Page content -->
-    <div class="container">
+    <div class="container mb-5">
         {% block content %}
         {% endblock %}
     </div>
@@ -74,4 +75,3 @@
     {% block extra_js %}{% endblock %}
 </body>
 </html>
-

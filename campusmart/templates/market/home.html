@@ -1,13 +1,67 @@
-{% if user_obj %}
-    <p>Welcome back, <strong>{{ user_obj.username }}</strong>!</p>
-    <hr>
-    <h3>User Info:</h3>
-    <ul>
-        <li><strong>Name:</strong> {{ user_obj.name }}</li>
-        <li><strong>Username:</strong> {{ user_obj.username }}</li>
-        <li><strong>Email:</strong> {{ user_obj.email }}</li>
-    </ul>
-{% else %}
-    <p>You are not logged in. <a href="{% url 'marketplace:login' %}">Login here</a>.</p>
-{% endif %}
+{% extends "core/base.html" %}
 
+{% block content %}
+<div class="container mt-4">
+
+    {% if user.is_authenticated %}
+        <p>Welcome back, <strong>{{ user.username }}</strong>!</p>
+        <hr>
+        <h3>User Info:</h3>
+        <ul>
+            <li><strong>Username:</strong> {{ user.username }}</li>
+            <li><strong>Email:</strong> {{ user.email }}</li>
+        </ul>
+        <div class="my-4">
+            <a href="{% url 'listings:create' %}" class="btn btn-success">Create New Listing</a>
+        </div>
+    {% else %}
+        <p>You are not logged in. <a href="{% url 'login' %}">Login here</a>.</p>
+    {% endif %}
+
+    <hr>
+
+    <h1>Marketplace Listings</h1>
+
+    <div class="row">
+        {% for listing in listings %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="{{ listing.photo.url }}" class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ listing.title }}</h5>
+                    <p class="card-text">{{ listing.description|truncatewords:10 }}</p>
+                    <a href="{% url 'listings:detail' listing.id %}" class="btn btn-primary">View</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No listings yet. Be the first to post!</p>
+        {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            {% for num in paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+
+</div>
+{% endblock %}
