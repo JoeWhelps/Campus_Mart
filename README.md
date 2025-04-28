@@ -21,3 +21,7 @@ name: jwhelple<br/>
 email: jwhelple@nd.edu<br/>
 password: ChickenJockey<br/>
 
+regular user info:<br/>
+name: joemama3<br/>
+password: Flint&Steel<br/>
+
