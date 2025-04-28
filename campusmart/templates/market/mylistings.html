@@ -1,26 +1,22 @@
-
 {% extends "core/base.html" %}
+
 {% block content %}
-{% if user_obj %}
-    <p>Welcome back, <strong>{{ user_obj.username }}</strong>!</p>
-    <hr>
-    <h3>User Info:</h3>
-    <ul>
-        <li><strong>Name:</strong> {{ user_obj.name }}</li>
-        <li><strong>Username:</strong> {{ user_obj.username }}</li>
-        <li><strong>Email:</strong> {{ user_obj.email }}</li>
-    </ul>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'marketplace:logout' %}">Logout</a>
-    </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'marketplace:create' %}">Create Listing</a>
-    </li>
+<div class="row">
+    {% for listing in listings %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="{{ listing.photo.url }}" class="card-img-top" alt="Product Image" style="height: 150px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title">{{ listing.title }}</h5>
+                <p class="card-text">{{ listing.description|truncatewords:10 }}</p>
+                <a href="{% url 'listings:detail' listing.id %}" class="btn btn-primary">View</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No listings yet. Be the first to post!</p>
+    {% endfor %}
+</div>
 
-
-    
-{% else %}
-    <p>You are not logged in. <a href="{% url 'login' %}">Login here</a>.</p>
-{% endif %}
 {% endblock %}

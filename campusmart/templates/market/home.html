@@ -1,4 +1,5 @@
 {% extends "core/base.html" %}
+{% load static %}
 
 {% block content %}
 <div class="container mt-4">
@@ -6,11 +7,6 @@
     {% if user.is_authenticated %}
         <p>Welcome back, <strong>{{ user.username }}</strong>!</p>
         <hr>
-        <h3>User Info:</h3>
-        <ul>
-            <li><strong>Username:</strong> {{ user.username }}</li>
-            <li><strong>Email:</strong> {{ user.email }}</li>
-        </ul>
         <div class="my-4">
             <a href="{% url 'listings:create' %}" class="btn btn-success">Create New Listing</a>
         </div>
@@ -20,24 +16,50 @@
 
     <hr>
 
-    <h1>Marketplace Listings</h1>
+    <h1>Search</h1>
 
+    <div class="search-bar">
+        <form method="GET" action="{% url 'listings:listings_home' %}">
+            <input type="text" name="q" placeholder="Search listings...">
+        </form>
+    </div>
+    
+
+    <!-- Marketplace Listings -->
+    <h1>Marketplace Listings</h1>
     <div class="row">
         {% for listing in listings %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <img src="{{ listing.photo.url }}" class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ listing.title }}</h5>
-                    <p class="card-text">{{ listing.description|truncatewords:10 }}</p>
-                    <a href="{% url 'listings:detail' listing.id %}" class="btn btn-primary">View</a>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="{{ listing.photo.url }}" class="card-img-top" alt="Product Image">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ listing.title }}</h5>
+                        <p class="card-text">{{ listing.description|truncatewords:10 }}</p>
+                        <button class="btn btn-primary" onclick="showModal({{ listing.id }})">View</button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Modal (hidden initially) -->
+    <div id="listingModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="listingModalLabel" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="listingModalLabel">Listing Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Content will be dynamically loaded here -->
                 </div>
             </div>
         </div>
-        {% empty %}
-        <p>No listings yet. Be the first to post!</p>
-        {% endfor %}
     </div>
+
+
 
     {% if is_paginated %}
     <nav aria-label="Page navigation">
@@ -62,6 +84,6 @@
         </ul>
     </nav>
     {% endif %}
-
+    <script src="{% static 'js/modal.js' %}"></script>
 </div>
 {% endblock %}

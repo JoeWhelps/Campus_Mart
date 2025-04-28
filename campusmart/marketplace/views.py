@@ -101,7 +101,7 @@ def createListings(request):
                 "values": model_to_dict(listing)
             })
 
-    return render(request, "market/createListing.html")
+    return render(request, "market/createListings.html")
 
 
 def logout(request):
