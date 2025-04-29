@@ -1,22 +1,31 @@
 {% extends "core/base.html" %}
+{% load static %}
 
 {% block content %}
+<div class="container mt-4">
 
-<div class="row">
-    {% for listing in listings %}
-    <div class="col-md-4 mb-4">
-        <div class="card h-100">
-            <img src="{{ listing.photo.url }}" class="card-img-top" alt="Product Image" style="height: 150px; object-fit: cover;">
-            <div class="card-body">
-                <h5 class="card-title">{{ listing.title }}</h5>
-                <p class="card-text">{{ listing.description|truncatewords:10 }}</p>
-                <a href="{% url 'listings:detail' listing.id %}" class="btn btn-primary">View</a>
-            </div>
+    <h1>My Listings</h1>
+
+    {% if listings %}
+        <div class="row">
+            {% for listing in listings %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="{{ listing.photo.url }}" class="card-img-top" alt="Product Image">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ listing.title }}</h5>
+                            <p class="card-text">{{ listing.description|truncatewords:10 }}</p>
+                            <a href="{% url 'listings:listing_detail' listing.id %}" class="btn btn-info">View Details</a>
+                            <a href="{% url 'listings:update' listing.id %}" class="btn btn-warning">Update</a>
+                            <a href="{% url 'listings:delete' listing.id %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this listing?');">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-    </div>
-    {% empty %}
-    <p>No listings yet. Be the first to post!</p>
-    {% endfor %}
-</div>
+    {% else %}
+        <p>You have no listings.</p>
+    {% endif %}
 
+</div>
 {% endblock %}

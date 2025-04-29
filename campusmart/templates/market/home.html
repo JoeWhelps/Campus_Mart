@@ -9,9 +9,11 @@
         <hr>
         <div class="my-4">
             <a href="{% url 'listings:create' %}" class="btn btn-success">Create New Listing</a>
+            <a href="{% url 'listings:my_listings' %}" class="btn btn-success">My Listings</a>
+            <a href="{% url 'messaging:inbox' %}" class="btn btn-success">Messaging</a>
         </div>
     {% else %}
-        <p>You are not logged in. <a href="{% url 'login' %}">Login here</a>.</p>
+        <p>You are not logged in. <a href="{% url 'marketplace:home' %}">Login here</a>.</p>
     {% endif %}
 
     <hr>

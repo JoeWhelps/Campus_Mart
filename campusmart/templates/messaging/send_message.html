@@ -1,0 +1,15 @@
+<!-- messaging/templates/messaging/send_message.html -->
+
+{% extends "core/base.html" %}
+
+{% block content %}
+<h1>Send a Message to {{ recipient.username }}</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Send</button>
+</form>
+
+<a href="{% url 'messaging:inbox' %}">Back to Inbox</a>
+{% endblock %}

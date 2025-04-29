@@ -1,7 +1,8 @@
 // static/js/modal.js
 
 function showModal(listingId) {
-    fetch(`/listings/${listingId}/`)
+    // Fetch listing details dynamically via an AJAX request
+    fetch(`/listings/${listingId}/`)  // Ensure the URL pattern matches your Django setup
         .then(response => response.json())
         .then(data => {
             const modalBody = document.querySelector('.modal-body');
@@ -21,4 +22,3 @@ function closeModal() {
     const modal = document.getElementById('listingModal');
     modal.style.display = 'none';
 }
-

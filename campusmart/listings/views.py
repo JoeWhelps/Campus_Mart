@@ -3,6 +3,8 @@ from .models import Listing
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404
+
 
 # Create your views here.
 
@@ -65,3 +67,8 @@ def listing_detail(request, listing_id):
     except Listing.DoesNotExist:
         return JsonResponse({'error': 'Listing not found'}, status=404)
 
+@login_required
+def my_listings(request):
+    # Get all listings where the seller is the currently logged-in user
+    listings = Listing.objects.filter(seller=request.user)
+    return render(request, 'listings/my_listings.html', {'listings': listings})

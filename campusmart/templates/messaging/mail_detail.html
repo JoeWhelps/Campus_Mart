@@ -1,0 +1,14 @@
+<!-- messaging/templates/messaging/message_detail.html -->
+
+{% extends "core/base.html" %}
+
+{% block content %}
+<h1>Message Details</h1>
+
+<p><strong>From:</strong> {{ message.sender.username }}</p>
+<p><strong>To:</strong> {{ message.receiver.username }}</p>
+<p><strong>Content:</strong> {{ message.content }}</p>
+
+<a href="{% url 'messaging:inbox' %}">Back to Inbox</a>
+{% endblock %}
+

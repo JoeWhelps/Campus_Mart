@@ -1,0 +1,34 @@
+<!-- messaging/templates/messaging/inbox.html -->
+
+{% extends "core/base.html" %}
+
+{% block content %}
+<h1>Inbox</h1>
+
+<h2>Received Messages</h2>
+<ul>
+    {% for message in received_messages %}
+        <li>
+            <a href="{% url 'messaging:message_detail' message.id %}">
+                {{ message.sender.username }}: {{ message.content|truncatewords:5 }}
+            </a>
+        </li>
+    {% empty %}
+        <li>No messages received yet.</li>
+    {% endfor %}
+</ul>
+
+<h2>Sent Messages</h2>
+<ul>
+    {% for message in sent_messages %}
+        <li>
+            To: {{ message.receiver.username }} - {{ message.content|truncatewords:5 }}
+        </li>
+    {% empty %}
+        <li>No messages sent yet.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'messaging:send_message' recipient_id=1 %}">Send a message to User 1</a>  <!-- Example for sending message to a specific user -->
+{% endblock %}
+
