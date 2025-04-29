@@ -8,6 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from django.forms.models import model_to_dict
+from django.db.models import Q
 from .models import User, Listing 
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
@@ -25,8 +26,16 @@ from listings.models import Listing
 
 @login_required
 def home_view(request):
-    listings = Listing.objects.all()
-    return render(request, 'market/home.html', {'listings': listings})
+    query = request.GET.get('q', '')
+    if query:
+        listings = Listing.objects.filter(title__icontains=query)
+    else:
+        listings = Listing.objects.all()
+    
+    return render(request, 'market/home.html', {
+        'listings': listings,
+        'query': query
+    })
 
 
 

@@ -1,2 +1,18 @@
 campus_mart/db.sqlite3
 __pycache__/
+
+# Database files
+db.sqlite3
+campusmart/db.sqlite3
+
+# Python
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+*.log
+local_settings.py
+db.sqlite3-journal
+media

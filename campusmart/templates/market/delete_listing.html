@@ -1,0 +1,35 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-body text-center">
+            <h1 class="card-title text-danger">Delete Listing</h1>
+            <p class="card-text">Are you sure you want to delete the listing "{{ object.title }}"?</p>
+            <p class="card-text"><small class="text-muted">This action cannot be undone.</small></p>
+            
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <img src="{{ object.photo.url }}" class="img-fluid rounded" alt="{{ object.title }}">
+                </div>
+                <div class="col-md-6 text-start">
+                    <h5>Listing Details:</h5>
+                    <p><strong>Title:</strong> {{ object.title }}</p>
+                    <p><strong>Price:</strong> ${{ object.price }}</p>
+                    <p><strong>Condition:</strong> {{ object.condition }}</p>
+                    <p><strong>Status:</strong> {{ object.status }}</p>
+                </div>
+            </div>
+            
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'listings:my_listings' %}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-danger">Delete Listing</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

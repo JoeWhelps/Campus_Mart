@@ -10,7 +10,8 @@
     {% for message in received_messages %}
         <li>
             <a href="{% url 'messaging:message_detail' message.id %}">
-                {{ message.sender.username }}: {{ message.content|truncatewords:5 }}
+                From: {{ message.sender.username }} - {{ message.content|truncatewords:5 }}
+                <small>({{ message.timestamp|date:"M d, Y H:i" }})</small>
             </a>
         </li>
     {% empty %}
@@ -22,13 +23,30 @@
 <ul>
     {% for message in sent_messages %}
         <li>
-            To: {{ message.receiver.username }} - {{ message.content|truncatewords:5 }}
+            <a href="{% url 'messaging:message_detail' message.id %}">
+                To: {{ message.receiver.username }} - {{ message.content|truncatewords:5 }}
+                <small>({{ message.timestamp|date:"M d, Y H:i" }})</small>
+            </a>
         </li>
     {% empty %}
         <li>No messages sent yet.</li>
     {% endfor %}
 </ul>
 
-<a href="{% url 'messaging:send_message' recipient_id=2%}">Send a message to User 1</a>  <!-- Example for sending message to a specific user -->
+<h2>Send a New Message</h2>
+<div class="user-list">
+    <h3>Select a recipient:</h3>
+    <ul>
+        {% for user in all_users %}
+            <li>
+                <a href="{% url 'messaging:send_message' recipient_id=user.id %}">
+                    Send message to {{ user.username }}
+                </a>
+            </li>
+        {% empty %}
+            <li>No other users available.</li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}
 
