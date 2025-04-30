@@ -144,3 +144,6 @@ LOGOUT_REDIRECT_URL = '/login/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Krato$Coin API Settings
+KRATO_API_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU0NjcwNDU5LCJpYXQiOjE3NDYwMzA0NTksImp0aSI6ImYzMTY5YTRkZmVkZTQ3ODA4MGU0MDM1YmJkMzhhM2FjIiwidXNlcl9pZCI6ODF9.NbN0f1mv9nHEDhbnOqaZCPCRSaeKuSc76NKBCZYTyRk'  # This will be set when you receive your API token

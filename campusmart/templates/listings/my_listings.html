@@ -5,7 +5,12 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>My Listings</h1>
-        <a href="{% url 'listings:create' %}" class="btn btn-success">Create New Listing</a>
+        <div>
+            <a href="{% url 'listings:purchase_listings' %}" class="btn btn-outline-primary btn-sm me-2">
+                <i class="bi bi-coin"></i> Buy More Listings
+            </a>
+            <a href="{% url 'listings:create' %}" class="btn btn-success">Create New Listing</a>
+        </div>
     </div>
 
     {% if listings %}
@@ -22,7 +27,7 @@
                             <p class="card-text"><small class="text-muted">Posted: {{ listing.created_at|date:"M d, Y" }}</small></p>
                             
                             <div class="d-flex justify-content-between mt-3">
-                                <a href="{% url 'listings:listing_detail' listing.id %}" class="btn btn-primary">View</a>
+                                <button class="btn btn-primary" onclick="showModal({{ listing.id }})">View</button>
                                 <a href="{% url 'listings:update' listing.id %}" class="btn btn-warning">Edit</a>
                                 <a href="{% url 'listings:delete' listing.id %}" class="btn btn-danger" 
                                    onclick="return confirm('Are you sure you want to delete this listing?');">Delete</a>
@@ -37,5 +42,46 @@
             <p>You don't have any listings yet. <a href="{% url 'listings:create' %}">Create your first listing</a>!</p>
         </div>
     {% endif %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="listingModal" tabindex="-1" aria-labelledby="listingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="listingModalLabel">Listing Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="modalContent">
+                        <div class="text-center mb-4">
+                            <img id="modalImage" src="" alt="" class="img-fluid rounded" style="max-height: 400px; object-fit: contain;">
+                        </div>
+                        <h3 id="modalTitle" class="mb-3"></h3>
+                        <p id="modalDescription" class="lead mb-4"></p>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <p><strong>Price:</strong> $<span id="modalPrice"></span></p>
+                                <p><strong>Condition:</strong> <span id="modalCondition"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+                                <p><strong>Posted:</strong> <span id="modalDate"></span></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="seller-info mb-4">
+                            <h5>Seller Information</h5>
+                            <p><strong>Seller:</strong> <span id="modalSeller"></span></p>
+                        </div>
+                        <div class="text-center">
+                            <a id="modalDetailLink" href="" class="btn btn-primary">View Full Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script src="{% static 'js/modal.js' %}"></script>
 {% endblock %} 

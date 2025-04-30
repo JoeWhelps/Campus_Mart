@@ -23,3 +23,11 @@ class Listing(models.Model):
 
     def __str__(self):
         return self.title
+
+class ListingPurchase(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = models.IntegerField(default=0)  # Number of additional listings purchased
+    purchase_date = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.amount} listings"

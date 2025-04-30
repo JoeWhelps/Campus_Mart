@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import check_password, make_password
 from django.core.exceptions import ValidationError
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
@@ -23,6 +23,8 @@ from django.contrib.auth import authenticate, login, logout as django_logout
 from .models import User, Listing
 from django.shortcuts import render
 from listings.models import Listing
+from django.views.decorators.http import require_GET
+
 
 @login_required
 def home_view(request):
@@ -116,3 +118,21 @@ def createListings(request):
 def logout(request):
     django_logout(request)
     return redirect('login')
+
+@require_GET
+def get_listing_details(request, listing_id):
+    listing = get_object_or_404(Listing, id=listing_id)
+    data = {
+        'title': listing.title,
+        'description': listing.description,
+        'price': listing.price,
+        'condition': listing.condition,
+        'status': listing.status,
+        'created_at': listing.created_at.strftime('%B %d, %Y'),
+        'updated_at': listing.updated_at.strftime('%B %d, %Y') if hasattr(listing, 'updated_at') else None,
+        'seller_username': listing.seller.username,
+        'seller_email': listing.seller.email,
+        'seller_id': listing.seller.id,
+        'photo_url': listing.photo.url if listing.photo else '',
+    }
+    return JsonResponse(data)

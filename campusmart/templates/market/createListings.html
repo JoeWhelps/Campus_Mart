@@ -14,6 +14,17 @@
     </div>
     {% endif %}
 
+    <div class="text-end mb-3">
+        <a href="{% url 'listings:purchase_listings' %}" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-coin"></i> Buy More Listings with Krato$Coin
+        </a>
+    </div>
+
+    <div class="alert alert-info mb-4">
+        <h5>Free Listings Remaining Today: {{ free_listings_remaining }}/4</h5>
+        <h5>Total Additional Listings Available: {{ remaining_listings }}</h5>
+    </div>
+
     <form class="m-auto col-md-6" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         
