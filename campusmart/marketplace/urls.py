@@ -7,8 +7,13 @@ urlpatterns = [
     path('', views.home_view, name='home'),  # default home route
     path('register/', views.register, name='register'),
     path('logout/', views.logout, name='logout'),
-    path('create/', views.createListings, name='create'),
-    path('listings/<int:listing_id>/', views.get_listing_details, name='listing_details'),
+    path('listings/', views.ListingListView.as_view(), name='listings_home'),
+    path('listings/create/', views.ListingCreateView.as_view(), name='create'),
+    path('listings/<int:pk>/update/', views.ListingUpdateView.as_view(), name='update'),
+    path('listings/<int:pk>/delete/', views.ListingDeleteView.as_view(), name='delete'),
+    path('listings/<int:listing_id>/', views.listing_detail, name='listing_detail'),
+    path('my-listings/', views.my_listings, name='my_listings'),
+    path('api/listings/<int:listing_id>/', views.get_listing_details, name='get_listing_details'),
 ]
 
 '''

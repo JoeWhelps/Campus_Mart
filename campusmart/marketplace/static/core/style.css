@@ -108,7 +108,6 @@ hr {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
-    align-content: center;
 }
 
 .modal-dialog {
@@ -118,18 +117,75 @@ hr {
 
 .modal-content {
     background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    align-content: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem;
 }
 
 .modal-title {
     margin: 0;
-    align-content: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.modal-body h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.modal-body h5 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.modal-body .text-primary {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.modal-body .badge {
+    font-size: 0.875rem;
+    padding: 0.35em 0.65em;
+}
+
+.modal-body .lead {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.modal-body .seller-info,
+.modal-body .listing-dates {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .modal-dialog {
+        max-width: 95%;
+        margin: 10px auto;
+    }
+    
+    .modal-body .row {
+        flex-direction: column;
+    }
+    
+    .modal-body .col-md-6 {
+        width: 100%;
+    }
 }

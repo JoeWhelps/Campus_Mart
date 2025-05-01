@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     'users',
     'listings',
     'marketplace',
-    'transactions',
     'messaging',
     'django.contrib.admin',
     'django.contrib.auth',

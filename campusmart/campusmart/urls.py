@@ -26,10 +26,4 @@ urlpatterns = [
     path('', include('marketplace.urls')),
     path('listings/', include('listings.urls')),
     path('messaging/', include('messaging.urls')),
-
-
-]
-
-# ✨ This serves media files during development!
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
