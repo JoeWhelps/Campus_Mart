@@ -4,9 +4,14 @@
 - Linking all of the necessary paths to the urlpatterns
 - debugging views.py and moving documents to their correct folders for overall functionality of the project thus far
 - Phase 1 Report Screenshots
+- Video of functionality
+- Backend functionality of the app
 
 <b>Contributions made by Katie</b>
 - Creating the User model and Listing Model
 - Creating the views for creating an account and creating a listing
 - Creating templates for creating an account and creating a listing
 - Phase 1 Report Writeups
+- Final Report Writeup
+- HTML and CSS styling of the pages
+- Listing models and views
