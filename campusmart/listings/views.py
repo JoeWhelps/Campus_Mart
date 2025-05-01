@@ -14,6 +14,7 @@ from django.utils import timezone
 
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView, ListView
 
+
 class ListingCreateView(CreateView):
     model = Listing
     fields = ['title', 'description', 'price', 'condition', 'photo']
@@ -23,7 +24,12 @@ class ListingCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Calculate remaining listings
-        total_purchased = sum(purchase.amount for purchase in ListingPurchase.objects.filter(user=self.request.user))
+        # Count every purchase in the last 24 hours
+        total_purchased_today = sum(purchase.amount for purchase in ListingPurchase.objects.filter(
+            user=self.request.user,
+            purchase_date__gte=timezone.now() - timezone.timedelta(days=1),
+            purchase_date__lte=timezone.now()
+        ))
         current_listings = Listing.objects.filter(seller=self.request.user).count()
         today_listings = Listing.objects.filter(
             seller=self.request.user,
@@ -33,13 +39,22 @@ class ListingCreateView(CreateView):
         # Calculate remaining free listings for today
         free_listings_remaining = max(0, 4 - today_listings)
         
-        # Calculate total remaining listings (free + purchased)
-        context['remaining_listings'] = free_listings_remaining + total_purchased - current_listings
+
+        # Calculate remaining purchased listings
+        # Only count listings beyond the free limit (4 per day) against purchased listings
+        if free_listings_remaining == 0:
+            purchased_listings_remaining = max(0, total_purchased_today - today_listings)
+        else:
+            purchased_listings_remaining = total_purchased_today
+        
+        # Total remaining listings is free + purchased
+        context['remaining_listings'] = free_listings_remaining + purchased_listings_remaining
         context['free_listings_remaining'] = free_listings_remaining
+        context['purchased_listings_remaining'] = purchased_listings_remaining
         return context
 
     def form_valid(self, form):
-        # Check if user has any remaining listings (free or purchased)
+        # Get current listing counts
         today_listings = Listing.objects.filter(
             seller=self.request.user,
             created_at__date=timezone.now().date()
@@ -48,13 +63,33 @@ class ListingCreateView(CreateView):
         total_purchased = sum(purchase.amount for purchase in ListingPurchase.objects.filter(user=self.request.user))
         current_listings = Listing.objects.filter(seller=self.request.user).count()
         
-        # Check if user has exceeded free listings for today
-        if today_listings >= 4 and (current_listings >= total_purchased):
-            messages.error(self.request, 'You have reached your daily limit of 4 free listings. Please purchase additional listings with Krato$Coin to create more.')
+        # Calculate listings beyond free limit
+        listings_beyond_free = max(0, current_listings - 4)
+        
+        # Check if user has any remaining listings
+        if today_listings >= 4 and listings_beyond_free >= total_purchased:
+            messages.error(self.request, 'You have reached your daily limit of 4 free listings and have no remaining purchased listings. Please purchase additional listings with Krato$Coin to create more.')
             return redirect('listings:purchase_listings')
         
+        # If we get here, user has either free listings remaining or purchased listings
         form.instance.seller = self.request.user
-        return super().form_valid(form)
+        
+        # Create the listing
+        response = super().form_valid(form)
+        
+        # Update the listing counts after creation
+        new_today_listings = Listing.objects.filter(
+            seller=self.request.user,
+            created_at__date=timezone.now().date()
+        ).count()
+        
+        # If we've exceeded free listings, we should have purchased listings available
+        if new_today_listings > 4 and listings_beyond_free >= total_purchased:
+            # This should never happen due to our earlier check, but just in case
+            messages.error(self.request, 'Error: Unable to create listing. Please try again.')
+            return redirect('listings:purchase_listings')
+            
+        return response
     
 
 class ListingUpdateView(UpdateView):
